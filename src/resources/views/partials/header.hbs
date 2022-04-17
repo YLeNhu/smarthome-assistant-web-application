@@ -1,0 +1,88 @@
+<header class="header body-pd" id="header">
+  {{!-- TOGGLE SIDEBAR BUTTON --}}
+  <div class="header__toggle">
+    <i class='bx bx-menu' id="header-toggle"></i>
+  </div>
+  {{!-- <div class="header__toggle_1">
+    <form action = "/tester/post_data" method = "post">
+        <label class="switch">
+            <input type="checkbox" name="checkbox" id="checkbox" onclick="clickFn(event)">
+            <span class="slider round"></span>
+        </label>
+  </div> --}}
+  <div class="turn-on-off-light-area">
+    
+    
+    
+  </div>
+  {{!-- <div class="toogle-title">
+    <h3>Bật/Tắt đèn</h2>
+  </div> --}}
+  {{!-- LOGO TEXT --}}
+  <div class="header-logo">
+    <h2>BK-ASSIST</h2>
+  </div>
+  
+  <div class="header__account-area">
+    {{#if session.user}}
+    {{!-- <div class="notification">
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1" data-id="{{this.id}}">Cảnh báo</button>
+        <span class="badge">3</span>   
+      </div>
+        
+    </div> --}}
+    <div class="header__img">
+      <div class="btn-group">
+        <div class="account-say-hi" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <p>Hi, {{session.user.first_name}}</p>
+          <img src="/upload/avatar_user/{{session.user.avatar}}" alt="">
+        </div>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item" href="/profile">Tài khoản của tôi</a></li>
+          <li><a class="dropdown-item" href="/loggout" style="color: red;">Đăng xuất</a></li>
+        </ul>
+      </div>
+    </div>
+    {{else}}
+    <div class="header__sign-in">
+      <a href="/login">Đăng nhập</a>
+    </div>
+    <div class="header__sign-in volunteer">
+      <a href="/register">Đăng ký</a>
+    </div>
+    {{/if}}
+
+  </div>
+</header>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Các rủi ro đang xảy ra!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+
+            
+
+            <div class="modal-footer">
+                <div id="btn-edit-detail-order"></div>
+                <div><button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">Đóng</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function clickFn(event) {
+        const checkbox = event.currentTarget;
+        checkbox.value = checkbox.checked ? 'LIGHT:ON' : 'LIGHT:OFF';
+        event.currentTarget.closest('form').submit()
+    }
+</script>
