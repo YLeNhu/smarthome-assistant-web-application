@@ -1,0 +1,74 @@
+{{#if (equal session.user null)}}
+{{>headerNoLogIn}}
+{{/if}}
+<div class="homepage-container">
+    <div class="homepage-content">
+        <div class="homepage-title">
+            <h1>BK-ASSIST</h1>
+            <div id="slogan">
+                Hiệu quả - nhanh chóng - tin cậy
+            </div>
+            <div class="homepage-log-in">
+                {{#if (equal session.user null)}}
+                <button type="button" class="btn btn-primary btn-lg btn-custom"><a href="/login">Sử dụng
+                        ngay</a></button>
+                {{/if}}
+            </div>
+
+        </div>
+    </div>
+    <div class="homepage-content-about-us">
+        <div class="homepage-content-about-us-title">
+            <div class="wow fadeInRight" data-wow-delay="0.5s" id="about-us">Chúng tôi là ai?</div>
+            <div id="about-us-content">
+                Chào mừng bạn đến với <span id="s">BK-ASSIST, website chuyên hỗ trợ giám sát, theo dõi rủi ro cho mái ấm của bạn.
+            </div>
+        </div>
+        <div class="homepage-content-img">
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+</script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#receive-body tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        
+        alertHighGasvalue();
+        
+    });
+    function alertHighGasvalue(){
+        $.ajax({
+            
+            url: '/tester/getLastGasValue',
+            
+            method: 'GET',
+            dataType: 'json',
+            success:function(response){ 
+                console.log('msg: '+ response.data);
+                if(response.msg=='success'){  
+                    
+                    
+                    console.log('value: ' + response.data[0].value);
+                    
+                    if(response.data[0].value > '60'){
+                        alert('CẢNH BÁO: PHÁT HIỆN NỒNG ĐỘ KHÍ GAS BẤT THƯỜNG, XIN VUI LÒNG KIỂM TRA CĂN HỘ CỦA BẠN NGAY LẬP TỨC!!');
+                    }
+                    
+                    alertHighGasvalue();
+                }else{  
+                    alert('get last gas data failed :(');  
+                }  
+            },  
+            error:function(response){  
+                     {{!-- alert('server error')      --}}
+            }  
+        });
+    }
+</script>
