@@ -1,0 +1,108 @@
+<div class="profile-container">
+  <div class="avatar-and-name">
+    <div>
+      <form class="a-edit" action="/profile/update-avatar" method="post" id="edit-profile-1"
+        enctype="multipart/form-data">
+        <img src="/upload/avatar_user/{{account.avatar}}" id="photo">
+        <input type="file" id="file" name="avatar" accept="image/*">
+        <label for="file" id="uploadBtn">Choose Photo</label>
+        <script src="/js/upload.js"></script>
+      </form>
+      {{!-- <button type="button" id="send-avatar">Lưu ảnh</button> --}}
+    </div>
+
+  </div>
+
+  {{!-- Begin infomation container --}}
+  <div class="personal-info">
+    <form action="/profile" class="edit-profile" id="edit-profile-2" enctype="multipart/form-data">
+      <div class="left-side">
+        {{!-- Last Name --}}
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text" id="inputGroup-sizing-default">Họ và tên lót</span>
+            <input type="text" class="form-control custom-input" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default" value="{{account.last_name}}" name="lastName">
+          </div>
+        </div>
+
+        {{!-- First Name --}}
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text" id="inputGroup-sizing-default">Tên</span>
+            <input type="text" class="form-control custom-input" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default" value="{{account.first_name}}" name="firstName">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text" id="inputGroup-sizing-default">Số điện thoại</span>
+            <input type="text" class="form-control custom-input" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default" value="{{account.phone_number}}" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text" id="inputGroup-sizing-default">Ngày sinh</span>
+            <input class="form-control custom-input" type="date" value="{{formatDateUS account.date_of_birth}}"
+              id="example-date-input" name="birthDay">
+          </div>
+        </div>
+        <div class="form-group">
+          {{#each address}}
+          <div class="input-group">
+            <span class="input-group-text" id="inputGroup-sizing-default">Địa chỉ</span>
+            <input type="text" class="form-control custom-input" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default" value="{{this.address}}" readonly>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      <button class="btn btn-primary btn-lg" id="save-profile-btn" type="submit">Lưu thay đổi</button>
+
+    </form>
+  </div>
+  {{!-- End infomation container --}}
+</div>
+<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
+<script src="/js/updateProfile.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#receive-body tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        alertHighGasvalue();
+    });
+    function alertHighGasvalue(){
+        $.ajax({
+            
+            url: '/tester/getLastGasValue',
+            
+            method: 'GET',
+            dataType: 'json',
+            success:function(response){ 
+                console.log('msg: '+ response.data);
+                if(response.msg=='success'){  
+                    
+                    
+                    console.log('value: ' + response.data[0].value);
+                    
+                    if(response.data[0].value > '60'){
+                        alert('CẢNH BÁO: PHÁT HIỆN NỒNG ĐỘ KHÍ GAS BẤT THƯỜNG, XIN VUI LÒNG KIỂM TRA CĂN HỘ CỦA BẠN NGAY LẬP TỨC!!');
+                    }
+                    
+                    alertHighGasvalue();
+                }else{  
+                    alert('get last gas data failed :(');  
+                }  
+            },  
+            error:function(response){  
+                     alert('server error')     
+            }  
+        });
+    }
+</script>

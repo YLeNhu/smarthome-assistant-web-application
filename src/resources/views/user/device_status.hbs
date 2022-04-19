@@ -1,0 +1,145 @@
+<div class="title" style="margin-bottom: 0px;">Danh sách thiết bị và trạng thái
+</div>
+<div class="toolbar-content">
+    <div class="button-refresh">
+        <button onClick="autoRefresh();"  class="btn btn-primary btn-lg">Refresh Page</button>
+    </div>
+    <div class="receive-tb-container">
+        <div class="receive-filter" style="margin-right:-35px;">
+            <input id="myInput" type="text" placeholder="Tìm kiếm...">
+        </div>  
+    </div>
+</div>
+{{#if devices_list}}
+<div class="waiting-content">
+    <div class="my-table">
+        <table class="list">
+        <thead>
+            <tr>
+                {{!-- <th>Mã</th> --}}
+                <th>Tên thiết bị</th>
+                <th class="col-time">Thời gian tạo thiết bị</th>
+            </tr>
+        </thead>
+        <tbody id="receive-body">
+
+            {{#each devices_list}}
+            
+            <tr>
+                {{!-- <td>{{this.id}}</td> --}}
+                <td>
+                    {{this.device_name}}
+                </td>
+                <td class="col-time">{{formatDate this.create_time}}</td>
+                {{!-- {{#each ret_list}} --}}
+                <td>
+                    {{!-- <a href="/device_status/{{this.id}}" class="btn btn-primary btn-lg">Chi tiết</a> --}}
+                   
+                        {{this.value}}
+                    
+                </td>
+                {{!-- {{/each}} --}}
+                
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <table class="list">
+        <thead>
+            <tr>
+                <th>Trạng thái mới nhất</th>
+                <th>Thời gian xuất hiện trạng thái</th>
+            </tr>
+        </thead>
+        <tbody id="receive-body">
+
+            {{#each ret_list}}
+            
+            <tr>
+                
+                {{!-- {{#each ret_list}} --}}
+                <td>
+                    {{!-- <a href="/device_status/{{this.id}}" class="btn btn-primary btn-lg">Chi tiết</a> --}}
+                   
+                        {{this.value}}
+                    
+                </td>
+                <td class="col-time">{{formatDate this.created_at}}</td>
+                {{!-- {{/each}} --}}
+                
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    </div>
+</div>
+<br>
+
+
+{{else}}
+<h2 class="note">Hiện tại chưa có thông tin nào để hiển thị</h2>
+{{/if}}
+
+
+<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
+<script>
+    function formatDate(date) {
+        if (date) {
+            let option = { hour: "2-digit", minute: "2-digit", second: "2-digit" };
+            return new Date(date).toLocaleDateString("vi-VN", option);
+        }
+    }
+    function log_console() {
+
+            console.log(devices_list);
+    }
+</script>
+
+<script>
+    function autoRefresh() {
+        window.location = window.location.href;
+    }
+    setInterval('autoRefresh()', 10000);
+    alertHighGasvalue();
+    
+</script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#receive-body tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        alertHighGasvalue();
+    });
+    function alertHighGasvalue(){
+        $.ajax({
+            
+            url: '/tester/getLastGasValue',
+            
+            method: 'GET',
+            dataType: 'json',
+            success:function(response){ 
+                console.log('msg: '+ response.data);
+                if(response.msg=='success'){  
+                    
+                    
+                    console.log('value: ' + response.data[0].value);
+                    
+                    if(response.data[0].value > '60'){
+                        alert('CẢNH BÁO: PHÁT HIỆN NỒNG ĐỘ KHÍ GAS BẤT THƯỜNG, XIN VUI LÒNG KIỂM TRA CĂN HỘ CỦA BẠN NGAY LẬP TỨC!!');
+                    }
+                    
+                    alertHighGasvalue();
+                }else{  
+                    
+                    alert('get last gas data failed :(');  
+                }  
+            },  
+            error:function(response){  
+                     alert('server error')     
+            }  
+        });
+    }
+</script>
