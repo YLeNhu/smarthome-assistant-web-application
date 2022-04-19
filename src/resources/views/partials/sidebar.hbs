@@ -7,26 +7,25 @@
             </a>
             <div class="nav__list">
                 <a href="/" class="nav__link" data-tab="tab0">
-                    <i class="material-icons nav__icon" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Trang chủ">home</i>
+                    <i class="fa fa-home" style="font-size:28px" ></i>
                     <span class="nav__name">Trang chủ</span>
                 </a>
 
                 {{#if (equal session.user.role 'C')}}  
                 <a href="/device_status" class="nav__link" data-tab="tab1">
-                    <i class='bx bxs-time-five nav__icon'></i>
+                    <i class="fa fa-clock" style="font-size:28px" ></i>
                     <span class="nav__name">Theo dõi</span>
                 </a>  
                 <a href="/support" class="nav__link" data-tab="tab2">
-                    <i class='material-icons nav__icon'>support</i>
+                    <i class="fa fa-comments" style="font-size:28px" ></i>
                     <span class="nav__name">Góp ý đã gửi</span>
                 </a>
                 
                 {{/if}}
 
                 <a href="/tester" class="nav__link" data-tab="tab3">
-                    <i class='material-icons nav__icon'>medication</i>
-                    <span class="nav__name">Tester</span>
+                    <i class="fa fa-cog fa-spin" style="font-size:28px" ></i>
+                    <span class="nav__name">Bật/Tắt đèn</span>
                 </a>
                 <hr>
             </div>
