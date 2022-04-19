@@ -1,5 +1,4 @@
 <div id="content-container" class="content-container">
-
     <form action = "/tester/post_data" method = "post">
         <label class="switch">
             <input type="checkbox" name="checkbox" id="checkbox" onclick="clickFn(event)">
@@ -8,12 +7,60 @@
     <div id="about-us-content">
         Hệ thống cần có thời gian để cập nhật dữ liệu, xin vui lòng chỉ bật tắt công tắc cách nhau mỗi 5s!
     </div>
+    <div class="colors_container" id="colors_slider" style="display:none;">
+        <div class="wrapper_color">
+           R<input type="range" min="0" max="255" value="0" id="red" oninput="colors()">
+       </div>
+       <div class="wrapper_color">
+            G<input type="range" min="0" max="255" value="125" id="green" oninput="colors()">
+        </div>
+        <div class="wrapper_color">
+            B<input type="range" min="0" max="255" value="255" id="blue" oninput="colors()">
+        </div>
+        <span id="output">RGB(0, 125, 255)</span>
+        <script>
+            function colors(){
+                var red= document.getElementById("red").value;
+                var green = document.getElementById("green").value;
+                var blue = document.getElementById("blue").value;
+                document.getElementById("output").innerHTML =  'RGB(' + red + ',' + green + ',' + blue + ')' ;
+                document.documentElement.style.setProperty("--rgb-color", 'rgb(' + red + ',' + green + ',' + blue + ')')
+                //var lightbulb_on = document.getElementsByClassName("light on bulb");
+                //var light_logo = document.getElementById("lightbulb_logo");
+            }
+        </script>
+    </div>
+    <div class="light" id="lightbulb">
+        <div class="wire"></div>
+        <div class="bulb">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div class="light_logo" id="lightbulb_logo" style="display:none;">
+            <h2>BK-ASSIST</h2>
+    </div>
 </div>
 <script>
     function clickFn(event) {
         const checkbox = event.currentTarget;
         checkbox.value = checkbox.checked ? 'LIGHT:ON' : 'LIGHT:OFF';
+        if(checkbox.checked){
+            document.getElementById("lightbulb").className = "light on";
+            document.getElementById("lightbulb_logo").style.display = "flex";
+            document.getElementById("colors_slider").style.display = "grid";
+        }
+        else{
+            document.getElementById("lightbulb").className = "light";
+            document.getElementById("lightbulb_logo").style.display = "none";
+            document.getElementById("colors_slider").style.display = "none";
+        }
+
         event.currentTarget.closest('form').submit();
+        //document.getElementById("checkbox").disabled = true;
+        /*setTimeout(function(){ 
+            document.getElementById("checkbox").disabled = false;
+        }, 5000);*/
         
     }
     function alertHighGasvalue(){
@@ -59,16 +106,23 @@
                     console.log('value: ' + response.data[0].value);
 
                     var checkbox1 = document.getElementById("checkbox")
+                    var lightbulb = document.getElementById("lightbulb")
                     if(response.data[0].value == 'LIGHT:ON'){
                         checkbox1.checked = 1;
+                        document.getElementById("lightbulb").className = "light on";
+                        document.getElementById("lightbulb_logo").style.display = "flex";
+                        document.getElementById("colors_slider").style.display = "grid";
                     }
 	                else{
                         checkbox1.checked = 0;
+                        document.getElementById("lightbulb").className = "light";
+                        document.getElementById("lightbulb_logo").style.display = "none";
+                        document.getElementById("colors_slider").style.display = "none";
                     } 
 	                document.getElementById("checkbox").addEventListener("change", function(element){
 		                    console.log(checkbox1.checked);
 	                });
-                    setTimeout(reloadButton, 3000);
+                    setTimeout(reloadButton, 4000); //set độ trễ 4s
                     
                 }else{  
                     alert('get last data failed :(');  
@@ -81,6 +135,8 @@
         });
 
     }
+
+    
     
 </script>
 

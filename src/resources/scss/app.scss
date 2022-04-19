@@ -9,6 +9,9 @@
   -webkit-box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
 }
+:root{
+  --rgb-color: rgb(0,125,255);
+}
 html {
   scroll-behavior: smooth;
   height: 100%;
@@ -30,5 +33,6 @@ body {
 @import 'alert';
 @import 'table_content';
 @import 'dashboard_simulator';
-
+@import 'lightbulb';
+@import 'colors';
 
