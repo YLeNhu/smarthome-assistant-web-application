@@ -29,7 +29,7 @@ exports.show = (req, res, next) => {
     }
 }
 exports.getLastData = (req, res, next)=>{
-    var info = 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/light/data';
+    var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/light/data';
     var latest_info = info.concat("?limit=1");
     axios.get(latest_info) //New
         .then(data =>  {
@@ -42,7 +42,7 @@ exports.getLastData = (req, res, next)=>{
         })                    
 }
 exports.getLastGasValue =  (req, res, next) => {
-    var info = 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/gas/data';
+    var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/gas/data';
     var latest_info = info.concat("?limit=1");
     axios.get(latest_info) //New
         .then(data =>  {
@@ -62,8 +62,8 @@ exports.post = (req, res, next) => {
 
             const client = mqtt.connect('mqtts://io.adafruit.com', {
                 port: 8883,
-                username: "LeCaoMinhTri",
-                password: "aio_oJeh32q26BF3dWSwioO7jPQiJQsF"
+                username: "doancnpm",
+                password: "aio_ONou67Nc367uSuvkS15oMrH7TuYI"
             });
             var light = `${client.options.username}/feeds/light`;
             client.on('connect', function() {

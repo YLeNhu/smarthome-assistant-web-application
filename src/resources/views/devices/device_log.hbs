@@ -12,9 +12,6 @@
     </div>
 </div>
 
-<h5 style="margin-left: 35px; margin-top: 10px; margin-bottom: 10px;">Vui lòng click vào tên thiết bị để xem lịch sử trạng thái gần đây nhất của chúng!</h5>
-
-
 
 {{#if devices_list}}
 <div class="waiting-content">
@@ -35,7 +32,7 @@
                 {{!-- <td>{{this.id}}</td> --}}
                 <td>
                     <div class="mycontainer">
-                        <a href="/device_status/getLog/{{this.device_id}}"  class="button" style="vertical-align:middle"><span>{{this.device_name}}</span></a>
+                        <div class="button" style="vertical-align:middle"><span>{{this.device_name}}</span></div>
                     </div>
                     
                     
@@ -57,7 +54,7 @@
     <table class="list">
         <thead>
             <tr>
-                <th>Trạng thái mới nhất</th>
+                <th>Trạng thái gần đây nhất</th>
                 <th>Thời gian xuất hiện trạng thái</th>
             </tr>
         </thead>

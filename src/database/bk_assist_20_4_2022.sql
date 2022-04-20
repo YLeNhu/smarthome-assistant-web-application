@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 08, 2022 lúc 03:42 PM
+-- Thời gian đã tạo: Th4 20, 2022 lúc 06:34 PM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 7.3.31
 
@@ -102,14 +102,6 @@ INSERT INTO `devices` (`id`, `create_time`, `customer_id`, `device_name`, `is_pu
 (4, '2022-03-17 07:03:21', 'a2a142f0-4825-11ec-a190-53e797f7b5e3', 'Gas', 1),
 (5, '2022-03-17 07:52:31', 'a2a142f0-4825-11ec-a190-53e797f7b5e3', 'Humidity', 1);
 
-/*
-INSERT INTO `devices` (`id`, `create_time`, `customer_id`, `device_name`, `is_public`) VALUES
-(6, '2022-03-17 06:44:58', '0009ba20-b898-11ec-95e9-8b0dc58a9c6c', 'Light', 1),
-(7, '2022-03-17 07:02:21', '0009ba20-b898-11ec-95e9-8b0dc58a9c6c', 'Temperature', 1),
-(8, '2022-03-17 07:02:21', '0009ba20-b898-11ec-95e9-8b0dc58a9c6c', 'Infrared', 0),
-(9, '2022-03-17 07:03:21', '0009ba20-b898-11ec-95e9-8b0dc58a9c6c', 'Gas', 1),
-(10, '2022-03-17 07:52:31', '0009ba20-b898-11ec-95e9-8b0dc58a9c6c', 'Humidity', 1);
-*/
 -- --------------------------------------------------------
 
 --
@@ -127,20 +119,12 @@ CREATE TABLE `devices_detail` (
 --
 
 INSERT INTO `devices_detail` (`id`, `device_id`, `feed_info`) VALUES
-(1, 1, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/light/data'),
-(2, 2, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/temperature/data'),
-(3, 5, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/humidity/data'),
-(4, 3, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/infrared/data'),
-(5, 4, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/gas/data');
+(1, 1, 'https://io.adafruit.com/api/v2/doancnpm/feeds/light/data'),
+(2, 2, 'https://io.adafruit.com/api/v2/doancnpm/feeds/temperature/data'),
+(3, 5, 'https://io.adafruit.com/api/v2/doancnpm/feeds/humidity/data'),
+(4, 3, 'https://io.adafruit.com/api/v2/doancnpm/feeds/infrared/data'),
+(5, 4, 'https://io.adafruit.com/api/v2/doancnpm/feeds/gas/data');
 
-/*
-INSERT INTO `devices_detail` (`id`, `device_id`, `feed_info`) VALUES
-(6, 6, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/light/data'),
-(7, 7, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/temperature/data'),
-(8, 8, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/humidity/data'),
-(9, 9, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/infrared/data'),
-(10, 10, 'https://io.adafruit.com/api/v2/LeCaoMinhTri/feeds/gas/data');
-*/
 -- --------------------------------------------------------
 
 --
@@ -164,7 +148,8 @@ INSERT INTO `feedbacks` (`id`, `content`, `account_id`) VALUES
 (7, NULL, 'a2a142f0-4825-11ec-a190-53e797f7b5e3'),
 (8, 'Test gửi góp ý 3', 'a2a142f0-4825-11ec-a190-53e797f7b5e3'),
 (9, 'Test gửi góp ý 4', 'a2a142f0-4825-11ec-a190-53e797f7b5e3'),
-(10, 'Test gửi góp ý 5', 'a2a142f0-4825-11ec-a190-53e797f7b5e3');
+(10, 'Test gửi góp ý 5', 'a2a142f0-4825-11ec-a190-53e797f7b5e3'),
+(11, 'Test gửi góp ý 6', 'a2a142f0-4825-11ec-a190-53e797f7b5e3');
 
 -- --------------------------------------------------------
 
@@ -254,7 +239,7 @@ ALTER TABLE `devices_detail`
 -- AUTO_INCREMENT cho bảng `feedbacks`
 --
 ALTER TABLE `feedbacks`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
