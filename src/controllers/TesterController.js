@@ -63,7 +63,7 @@ exports.post = (req, res, next) => {
             const client = mqtt.connect('mqtts://io.adafruit.com', {
                 port: 8883,
                 username: "LeCaoMinhTri",
-                password: "aio_oJeh32q26BF3dWSwioO7jPQiJQsF"
+                password: "aio_blom08dJqXTgJejN8g59kYU2YHYJ"
             });
             var light = `${client.options.username}/feeds/light`;
             client.on('connect', function() {
