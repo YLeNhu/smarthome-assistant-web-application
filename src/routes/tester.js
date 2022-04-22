@@ -27,7 +27,9 @@ const auth = require('../controllers/AuthenticateUser');
 
 router.get('/', auth(['C']), testerController.show);
 router.post('/post_data', auth(['C']), testerController.post);
+router.post('/postIR', auth(['C']), testerController.postIR);
 router.get('/getLastData',auth(['C']), testerController.getLastData);
 router.get('/getLastGasValue',auth(['C']), testerController.getLastGasValue);
+router.get('/getLastIR',auth(['C']), testerController.getLastIR);
 
 module.exports = router;

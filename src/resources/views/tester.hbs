@@ -40,6 +40,14 @@
     <div class="light_logo" id="lightbulb_logo" style="display:none;">
             <h2>BK-ASSIST</h2>
     </div>
+    <div class="IR_mode">
+        <form action = "/tester/postIR" method = "post">
+        <label class="switch">
+            <input type="checkbox" name="checkbox_mode" id="checkbox_mode" onclick="clickFnIR(event)">
+            <span class="slider round"></span>
+        </label>
+        <h2>Infrared Mode</h2>
+    </div>
 </div>
 <script>
     function clickFn(event) {
@@ -55,14 +63,15 @@
             document.getElementById("lightbulb_logo").style.display = "none";
             document.getElementById("colors_slider").style.display = "none";
         }
-
         event.currentTarget.closest('form').submit();
-        //document.getElementById("checkbox").disabled = true;
-        /*setTimeout(function(){ 
-            document.getElementById("checkbox").disabled = false;
-        }, 5000);*/
-        
     }
+
+    function clickFnIR(event) {
+        const checkbox = event.currentTarget;
+        checkbox.value = checkbox.checked ? 'IR:ON' : 'IR:OFF';
+        event.currentTarget.closest('form').submit();
+    }
+
     function alertHighGasvalue(){
         $.ajax({
             
@@ -91,6 +100,7 @@
             }  
         });
     }
+
     function reloadButton(){
         $.ajax({
             
@@ -133,10 +143,45 @@
                      alert('server error')     
             }  
         });
-
     }
 
-    
+    function reloadInfrared(){
+        $.ajax({
+            
+            url: '/tester/getLastIR',
+            
+            method: 'GET',
+            dataType: 'json',
+            success:function(response){ 
+                console.log('msg: '+ response.data);
+                if(response.msg=='success'){  
+                    {{!-- alert('get last data succesfully :)');   --}}
+                    
+                    console.log('value: ' + response.data[0].value);
+
+                    var checkbox1 = document.getElementById("checkbox_mode")
+                    if(response.data[0].value == 'IR:ON'){
+                        checkbox1.checked = 1;
+                    }
+	                else{
+                        checkbox1.checked = 0;
+                    } 
+	                document.getElementById("checkbox_mode").addEventListener("change", function(element){
+		                    console.log(checkbox1.checked);
+	                });
+                    setTimeout(reloadInfrared, 4000); //set độ trễ 4s
+                    
+                }else{  
+                    alert('get last data failed :(');  
+                }  
+                
+            },  
+            error:function(response){  
+                     alert('server error')     
+            }  
+        });
+
+    }    
     
 </script>
 
@@ -152,6 +197,7 @@
             });
         });
         reloadButton();
+        reloadInfrared();
         alertHighGasvalue();
     });
 </script>
