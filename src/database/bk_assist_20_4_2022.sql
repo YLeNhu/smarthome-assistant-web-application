@@ -121,9 +121,9 @@ CREATE TABLE `devices_detail` (
 INSERT INTO `devices_detail` (`id`, `device_id`, `feed_info`) VALUES
 (1, 1, 'https://io.adafruit.com/api/v2/doancnpm/feeds/light/data'),
 (2, 2, 'https://io.adafruit.com/api/v2/doancnpm/feeds/temperature/data'),
-(3, 5, 'https://io.adafruit.com/api/v2/doancnpm/feeds/humidity/data'),
-(4, 3, 'https://io.adafruit.com/api/v2/doancnpm/feeds/infrared/data'),
-(5, 4, 'https://io.adafruit.com/api/v2/doancnpm/feeds/gas/data');
+(3, 3, 'https://io.adafruit.com/api/v2/doancnpm/feeds/humidity/data'),
+(4, 4, 'https://io.adafruit.com/api/v2/doancnpm/feeds/infrared/data'),
+(5, 5, 'https://io.adafruit.com/api/v2/doancnpm/feeds/gas/data');
 
 -- --------------------------------------------------------
 

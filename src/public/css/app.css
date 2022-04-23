@@ -63,6 +63,13 @@ body {
   margin-top: 0;
 }
 
+.IR_mode {
+  position: absolute;
+  bottom: 10%;
+  justify-content: center;
+  align-items: center;
+}
+
 @media screen and (max-width: 744px) {
   .content-container {
     padding-right: 20px;
@@ -1180,6 +1187,7 @@ select {
   margin-left: 35px;
   overflow-x: auto;
   padding-left: 10px;
+  padding-right: 10px;
 }
 
 .list {
@@ -1602,7 +1610,7 @@ input:checked + .slider:before {
 
 .wire {
   position: absolute;
-  bottom: 60%;
+  bottom: 70%;
   width: 4px;
   height: 60vh;
   background: black;

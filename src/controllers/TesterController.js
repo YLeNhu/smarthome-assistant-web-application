@@ -55,15 +55,29 @@ exports.getLastGasValue =  (req, res, next) => {
         })               
 }
 
+exports.getLastIR =  (req, res, next) => {
+    var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/mode/data';
+    var latest_info = info.concat("?limit=1");
+    axios.get(latest_info) //New
+        .then(data =>  {
+            // console.log(data.data);
+            res.json({msg:'success',data:data.data});   
+        })
+        .catch(function (error) {
+                        // handle error
+            console.log(error);
+        })               
+}
+
 exports.post = (req, res, next) => {
-    console.log('1')
+    console.log('Start')
     const sendPostRequest = async () => {
         try {
 
             const client = mqtt.connect('mqtts://io.adafruit.com', {
                 port: 8883,
                 username: "doancnpm",
-                password: "aio_ONou67Nc367uSuvkS15oMrH7TuYI"
+                password: "aio_qCkZ91MKafjx9EkJYmzFmWYtOj5R"
             });
             var light = `${client.options.username}/feeds/light`;
             client.on('connect', function() {
@@ -83,13 +97,50 @@ exports.post = (req, res, next) => {
                     }
                 })
             });
-            console.log('End')
         } catch (err) {
             // Handle Error Here
             console.error(err);
         }
     } 
     sendPostRequest();
+    console.log('End')
+}
+
+exports.postIR = (req, res, next) => {
+    console.log('Start_infrared')
+    const sendPostRequest = async () => {
+        try {
+
+            const client = mqtt.connect('mqtts://io.adafruit.com', {
+                port: 8883,
+                username: "doancnpm",
+                password: "aio_qCkZ91MKafjx9EkJYmzFmWYtOj5R"
+            });
+            var mode = `${client.options.username}/feeds/mode`;
+            client.on('connect', function() {
+                console.log(client.connected)
+                client.subscribe(mode, function(err){
+                    console.log('Subscribed')
+                    if(!err){
+                        if(req.body.checkbox == 'IR:ON'){
+                            console.log('Publishing IR:ON...')
+                            client.publish(mode, 'IR:ON')
+                        }
+                        else{
+                            console.log('Publishing IR:OFF...')
+                            client.publish(mode, 'IR:OFF')
+                        }
+                        
+                    }
+                })
+            });
+        } catch (err) {
+            // Handle Error Here
+            console.error(err);
+        }
+    } 
+    sendPostRequest();
+    console.log('End')
 }
 
 

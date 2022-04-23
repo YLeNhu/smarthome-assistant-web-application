@@ -9,10 +9,8 @@ exports.show = (req, res, next) => {
         db.query(sql_1, [req.session.user.phone_number], (err, re) => {
             // if (err) throw err;
             const id = re[0].id;
-            
             let sql2 = "SELECT * FROM `devices` JOIN `devices_detail` ON devices.id = devices_detail.device_id WHERE (customer_id = ? AND devices.is_public = '1');";
             db.query(sql2, [id], async (err, devices_list) => {
-
                 
                 if (devices_list.length > 0) {
                     var l = devices_list.length;
@@ -20,9 +18,9 @@ exports.show = (req, res, next) => {
                     for (let i = 0; i < l; i++){
                         // console.log(devices_list[i].id)
                         var info = devices_list[i].feed_info;
-                        var latest_info = info.concat("?limit=1"); //New
+                        var latest_info = info.concat("?limit=1");
                         // console.log(latest_info)
-                        await axios.get(latest_info) //New
+                        await axios.get(latest_info)
                             .then(data =>  {
                             // handle success
                             // console.log(data.data)
@@ -46,9 +44,6 @@ exports.show = (req, res, next) => {
                 }
             }) 
         });
-
-
-        
     }
 }
 exports.showLog = (req, res, next) => {
