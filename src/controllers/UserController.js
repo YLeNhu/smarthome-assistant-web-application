@@ -133,7 +133,8 @@ exports.login = (req, res, next) => {
             });
         }
         else {
-            res.send('Account wasn\'t existed');
+            //res.send('Account wasn\'t existed');
+            res.render('login', { message: "Account wasn\'t existed" });
         }
     });
 
