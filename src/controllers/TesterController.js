@@ -70,7 +70,7 @@ exports.getLastIR =  (req, res, next) => {
 }
 
 exports.post = (req, res, next) => {
-    console.log('Start')
+    console.log('Start lightbulb')
     const sendPostRequest = async () => {
         try {
 
@@ -122,7 +122,7 @@ exports.postIR = (req, res, next) => {
                 client.subscribe(mode, function(err){
                     console.log('Subscribed')
                     if(!err){
-                        if(req.body.checkbox == 'IR:ON'){
+                        if(req.body.checkbox_mode == 'IR:ON'){
                             console.log('Publishing IR:ON...')
                             client.publish(mode, 'IR:ON')
                         }

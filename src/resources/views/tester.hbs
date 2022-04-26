@@ -1,52 +1,54 @@
 <div id="content-container" class="content-container">
-    <form action = "/tester/post_data" method = "post">
-        <label class="switch">
-            <input type="checkbox" name="checkbox" id="checkbox" onclick="clickFn(event)">
-            <span class="slider round"></span>
-        </label>
-    <div id="about-us-content">
-        <!--Hệ thống cần có thời gian để cập nhật dữ liệu, xin vui lòng chỉ bật tắt công tắc cách nhau mỗi 5s! -->
-        <h2>Light Switch</h2>
-    </div>
-    <div class="colors_container" id="colors_slider" style="display:none;">
-        <div class="wrapper_color">
-           R<input type="range" min="0" max="255" value="0" id="red" oninput="colors()">
-       </div>
-       <div class="wrapper_color">
-            G<input type="range" min="0" max="255" value="125" id="green" oninput="colors()">
+    <div class="light_mode">
+        <form action = "/tester/post_data" method = "post">
+            <label class="switch">
+                <input type="checkbox" name="checkbox" id="checkbox" onclick="clickFn(event)">
+                <span class="slider round"></span>
+            </label>
+        </form>    
+        <div id="about-us-content">
+            <!--Hệ thống cần có thời gian để cập nhật dữ liệu, xin vui lòng chỉ bật tắt công tắc cách nhau mỗi 5s! -->
+            <h2>Light Switch</h2>
         </div>
-        <div class="wrapper_color">
-            B<input type="range" min="0" max="255" value="255" id="blue" oninput="colors()">
+        <div class="colors_container" id="colors_slider" style="display:none;">
+            <div class="wrapper_color">
+                R<input type="range" min="0" max="255" value="0" id="red" oninput="colors()">
+            </div>
+            <div class="wrapper_color">
+                G<input type="range" min="0" max="255" value="125" id="green" oninput="colors()">
+            </div>
+            <div class="wrapper_color">
+                B<input type="range" min="0" max="255" value="255" id="blue" oninput="colors()">
+            </div>
+            <span id="output">RGB(0, 125, 255)</span>
+            <script>
+                function colors(){
+                    var red= document.getElementById("red").value;
+                    var green = document.getElementById("green").value;
+                    var blue = document.getElementById("blue").value;
+                    document.getElementById("output").innerHTML =  'RGB(' + red + ',' + green + ',' + blue + ')' ;
+                    document.documentElement.style.setProperty("--rgb-color", 'rgb(' + red + ',' + green + ',' + blue + ')')
+                }
+            </script>
         </div>
-        <span id="output">RGB(0, 125, 255)</span>
-        <script>
-            function colors(){
-                var red= document.getElementById("red").value;
-                var green = document.getElementById("green").value;
-                var blue = document.getElementById("blue").value;
-                document.getElementById("output").innerHTML =  'RGB(' + red + ',' + green + ',' + blue + ')' ;
-                document.documentElement.style.setProperty("--rgb-color", 'rgb(' + red + ',' + green + ',' + blue + ')')
-                //var lightbulb_on = document.getElementsByClassName("light on bulb");
-                //var light_logo = document.getElementById("lightbulb_logo");
-            }
-        </script>
-    </div>
-    <div class="light" id="lightbulb">
-        <div class="wire"></div>
-        <div class="bulb">
-            <span></span>
-            <span></span>
+        <div class="light" id="lightbulb">
+            <div class="wire"></div>
+            <div class="bulb">
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    </div>
-    <div class="light_logo" id="lightbulb_logo" style="display:none;">
+        <div class="light_logo" id="lightbulb_logo" style="display:none;">
             <h2>BK-ASSIST</h2>
+        </div>
     </div>
     <div class="IR_mode">
         <form action = "/tester/postIR" method = "post">
-        <label class="switch">
-            <input type="checkbox" name="checkbox_mode" id="checkbox_mode" onclick="clickFnIR(event)">
-            <span class="slider round"></span>
-        </label>
+            <label class="switch">
+                <input type="checkbox" name="checkbox_mode" id="checkbox_mode" onclick="clickFnIR(event)">
+                <span class="slider round"></span>
+            </label>
+        </form>    
         <h2>Infrared Mode</h2>
     </div>
 </div>
@@ -70,6 +72,7 @@
     function clickFnIR(event) {
         const checkbox = event.currentTarget;
         checkbox.value = checkbox.checked ? 'IR:ON' : 'IR:OFF';
+        //alert(checkbox.value);
         event.currentTarget.closest('form').submit();
     }
 
@@ -133,7 +136,7 @@
 	                document.getElementById("checkbox").addEventListener("change", function(element){
 		                    console.log(checkbox1.checked);
 	                });
-                    setTimeout(reloadButton, 4000); //set độ trễ 4s
+                    setTimeout(reloadButton, 3000); //set độ trễ 3s
                     
                 }else{  
                     alert('get last data failed :(');  
@@ -170,7 +173,7 @@
 	                document.getElementById("checkbox_mode").addEventListener("change", function(element){
 		                    console.log(checkbox1.checked);
 	                });
-                    setTimeout(reloadInfrared, 4000); //set độ trễ 4s
+                    setTimeout(reloadInfrared, 3000); //set độ trễ 3s
                     
                 }else{  
                     alert('get last data failed :(');  
