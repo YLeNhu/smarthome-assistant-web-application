@@ -8,7 +8,7 @@
         </form>    
         <div id="about-us-content">
             <!--Hệ thống cần có thời gian để cập nhật dữ liệu, xin vui lòng chỉ bật tắt công tắc cách nhau mỗi 5s! -->
-            <h2>Light Switch</h2>
+            Đèn đang bật
         </div>
         <div class="colors_container" id="colors_slider" style="display:none;">
             <div class="wrapper_color">
@@ -48,23 +48,31 @@
                 <input type="checkbox" name="checkbox_mode" id="checkbox_mode" onclick="clickFnIR(event)">
                 <span class="slider round"></span>
             </label>
-        </form>    
-        <h2>Infrared Mode</h2>
+        </form>
+        <div id="infrared_mode_status">    
+            Chế độ hồng ngoại đang tắt
+        </div>
     </div>
 </div>
 <script>
+    //var light_mode = 0;
+    //var IR_mode = 0;
     function clickFn(event) {
         const checkbox = event.currentTarget;
         checkbox.value = checkbox.checked ? 'LIGHT:ON' : 'LIGHT:OFF';
         if(checkbox.checked){
+            //light_mode = 1;
             document.getElementById("lightbulb").className = "light on";
             document.getElementById("lightbulb_logo").style.display = "flex";
             document.getElementById("colors_slider").style.display = "grid";
+            document.getElementById("about-us-content").innerHTML = "Đèn đang bật"
         }
         else{
+            //light_mode = 0;
             document.getElementById("lightbulb").className = "light";
             document.getElementById("lightbulb_logo").style.display = "none";
             document.getElementById("colors_slider").style.display = "none";
+            document.getElementById("about-us-content").innerHTML = "Đèn đang tắt"
         }
         event.currentTarget.closest('form').submit();
     }
@@ -72,6 +80,11 @@
     function clickFnIR(event) {
         const checkbox = event.currentTarget;
         checkbox.value = checkbox.checked ? 'IR:ON' : 'IR:OFF';
+        if(checkbox.checked){
+            document.getElementById("infrared_mode_status").innerHTML = "Chế độ hồng ngoại đang bật"
+        }else{
+            document.getElementById("infrared_mode_status").innerHTML = "Chế độ hồng ngoại đang tắt"
+        }
         //alert(checkbox.value);
         event.currentTarget.closest('form').submit();
     }
@@ -121,22 +134,27 @@
 
                     var checkbox1 = document.getElementById("checkbox")
                     var lightbulb = document.getElementById("lightbulb")
+                    /*document.getElementById("checkbox").addEventListener("change", function(element){
+		                    //alert("Bpx changed")
+                            setTimeout(reloadButton, 5000);
+	                });*/
                     if(response.data[0].value == 'LIGHT:ON'){
                         checkbox1.checked = 1;
                         document.getElementById("lightbulb").className = "light on";
                         document.getElementById("lightbulb_logo").style.display = "flex";
                         document.getElementById("colors_slider").style.display = "grid";
+                        document.getElementById("about-us-content").innerHTML = "Đèn đang bật"
                     }
 	                else{
                         checkbox1.checked = 0;
                         document.getElementById("lightbulb").className = "light";
                         document.getElementById("lightbulb_logo").style.display = "none";
                         document.getElementById("colors_slider").style.display = "none";
+                        document.getElementById("about-us-content").innerHTML = "Đèn đang tắt"
                     } 
-	                document.getElementById("checkbox").addEventListener("change", function(element){
-		                    console.log(checkbox1.checked);
-	                });
-                    setTimeout(reloadButton, 3000); //set độ trễ 3s
+	                
+                    setTimeout(reloadButton, 5000); //set độ trễ 5s
+                    //reloadButton();
                     
                 }else{  
                     alert('get last data failed :(');  
@@ -166,14 +184,16 @@
                     var checkbox1 = document.getElementById("checkbox_mode")
                     if(response.data[0].value == 'IR:ON'){
                         checkbox1.checked = 1;
+                        document.getElementById("infrared_mode_status").innerHTML = "Chế độ hồng ngoại đang bật"
                     }
 	                else{
                         checkbox1.checked = 0;
+                        document.getElementById("infrared_mode_status").innerHTML = "Chế độ hồng ngoại đang tắt"
                     } 
 	                document.getElementById("checkbox_mode").addEventListener("change", function(element){
 		                    console.log(checkbox1.checked);
 	                });
-                    setTimeout(reloadInfrared, 3000); //set độ trễ 3s
+                    setTimeout(reloadInfrared, 5000); //set độ trễ 5s
                     
                 }else{  
                     alert('get last data failed :(');  
