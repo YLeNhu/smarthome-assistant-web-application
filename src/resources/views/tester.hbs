@@ -1,34 +1,37 @@
 <div id="content-container" class="content-container">
-    <div class="light_mode">
-        <form action = "/tester/post_data" method = "post">
-            <label class="switch">
-                <input type="checkbox" name="checkbox" id="checkbox" onclick="clickFn(event)">
-                <span class="slider round"></span>
-            </label>
-        </form>    
-        <div id="about-us-content">
-            <!--Hệ thống cần có thời gian để cập nhật dữ liệu, xin vui lòng chỉ bật tắt công tắc cách nhau mỗi 5s! -->
-        </div>
-        <div class="colors_container" id="colors_slider" style="display:none;">
-            <div class="wrapper_color">
-                R<input type="range" min="0" max="255" value="0" id="red" oninput="colors()">
+    <div class="light_mode-container">
+        <div class="light_mode">
+            <form action = "/tester/post_data" method = "post">
+                <label class="switch">
+                    <input type="checkbox" name="checkbox" id="checkbox" onclick="clickFn(event)">
+                    <span class="slider round"></span>
+                </label>
+            </form>    
+            <div id="about-us-content">
+                <!--Hệ thống cần có thời gian để cập nhật dữ liệu, xin vui lòng chỉ bật tắt công tắc cách nhau mỗi 5s! -->
             </div>
-            <div class="wrapper_color">
-                G<input type="range" min="0" max="255" value="125" id="green" oninput="colors()">
+        
+            <div class="colors_container" id="colors_slider" style="display:none;">
+                <div class="wrapper_color">
+                    R<input type="range" min="0" max="255" value="0" id="red" oninput="colors()">
+                </div>
+                <div class="wrapper_color">
+                    G<input type="range" min="0" max="255" value="125" id="green" oninput="colors()">
+                </div>
+                <div class="wrapper_color">
+                    B<input type="range" min="0" max="255" value="255" id="blue" oninput="colors()">
+                </div>
+                <span id="output">RGB(0, 125, 255)</span>
+                <script>
+                    function colors(){
+                        var red= document.getElementById("red").value;
+                        var green = document.getElementById("green").value;
+                        var blue = document.getElementById("blue").value;
+                        document.getElementById("output").innerHTML =  'RGB(' + red + ',' + green + ',' + blue + ')' ;
+                        document.documentElement.style.setProperty("--rgb-color", 'rgb(' + red + ',' + green + ',' + blue + ')')
+                    }
+                </script>
             </div>
-            <div class="wrapper_color">
-                B<input type="range" min="0" max="255" value="255" id="blue" oninput="colors()">
-            </div>
-            <span id="output">RGB(0, 125, 255)</span>
-            <script>
-                function colors(){
-                    var red= document.getElementById("red").value;
-                    var green = document.getElementById("green").value;
-                    var blue = document.getElementById("blue").value;
-                    document.getElementById("output").innerHTML =  'RGB(' + red + ',' + green + ',' + blue + ')' ;
-                    document.documentElement.style.setProperty("--rgb-color", 'rgb(' + red + ',' + green + ',' + blue + ')')
-                }
-            </script>
         </div>
         <div class="light" id="lightbulb">
             <div class="wire"></div>
@@ -54,6 +57,8 @@
 <script>
     //var light_mode = 0;
     //var IR_mode = 0;
+    var just_click_light = false;
+    var just_click_IR = false;
     function clickFn(event) {
         const checkbox = event.currentTarget;
         checkbox.value = checkbox.checked ? 'LIGHT:ON' : 'LIGHT:OFF';
@@ -131,26 +136,34 @@
 
                     var checkbox1 = document.getElementById("checkbox")
                     var lightbulb = document.getElementById("lightbulb")
-                    /*document.getElementById("checkbox").addEventListener("change", function(element){
-		                    //alert("Bpx changed")
-                            setTimeout(reloadButton, 5000);
-	                });*/
-                    if(response.data[0].value == 'LIGHT:ON'){
-                        checkbox1.checked = 1;
-                        document.getElementById("lightbulb").className = "light on";
-                        document.getElementById("lightbulb_logo").style.display = "flex";
-                        document.getElementById("colors_slider").style.display = "grid";
-                        document.getElementById("about-us-content").innerHTML = "Đèn đang bật"
+                    document.getElementById("checkbox").addEventListener("change", function(element){
+		                    just_click_light = true;
+                            //alert("Just clicked 1");
+	                });
+                    if(just_click_light == true){
+                        //alert("Just clicked 2");
+                        just_click_light = false;
+                        setTimeout(reloadButton, 3000);
                     }
-	                else{
-                        checkbox1.checked = 0;
-                        document.getElementById("lightbulb").className = "light";
-                        document.getElementById("lightbulb_logo").style.display = "none";
-                        document.getElementById("colors_slider").style.display = "none";
-                        document.getElementById("about-us-content").innerHTML = "Đèn đang tắt"
-                    } 
-	                
-                    setTimeout(reloadButton, 5000); //set độ trễ 5s
+                    else{
+                        if(response.data[0].value == 'LIGHT:ON'){
+                            checkbox1.checked = 1;
+                            document.getElementById("lightbulb").className = "light on";
+                            document.getElementById("lightbulb_logo").style.display = "flex";
+                            document.getElementById("colors_slider").style.display = "grid";
+                            document.getElementById("about-us-content").innerHTML = "Đèn đang bật";
+                            //light_mode = 1;
+                        }
+	                    else{
+                            checkbox1.checked = 0;
+                            document.getElementById("lightbulb").className = "light";
+                            document.getElementById("lightbulb_logo").style.display = "none";
+                            document.getElementById("colors_slider").style.display = "none";
+                            document.getElementById("about-us-content").innerHTML = "Đèn đang tắt";
+                            //light_mode = 0;
+                        } 
+                        setTimeout(reloadButton, 3000); //set độ trễ 3s
+                    }
                     //reloadButton();
                     
                 }else{  
@@ -178,19 +191,25 @@
                     
                     console.log('value: ' + response.data[0].value);
 
-                    var checkbox1 = document.getElementById("checkbox_mode")
-                    if(response.data[0].value == 'IR:ON'){
-                        checkbox1.checked = 1;
-                        document.getElementById("infrared_mode_status").innerHTML = "Chế độ hồng ngoại đang bật"
-                    }
-	                else{
-                        checkbox1.checked = 0;
-                        document.getElementById("infrared_mode_status").innerHTML = "Chế độ hồng ngoại đang tắt"
-                    } 
-	                document.getElementById("checkbox_mode").addEventListener("change", function(element){
-		                    console.log(checkbox1.checked);
+                    var checkbox1 = document.getElementById("checkbox_mode");
+                    document.getElementById("checkbox_mode").addEventListener("change", function(element){
+		                    just_click_IR = true;
+                            //alert("Just clicked 1");
 	                });
-                    setTimeout(reloadInfrared, 5000); //set độ trễ 5s
+                    if(just_click_IR == true){
+                        just_click_IR = false;
+                        setTimeout(reloadInfrared, 3000);
+                    }else{
+                        if(response.data[0].value == 'IR:ON'){
+                            checkbox1.checked = 1;
+                            document.getElementById("infrared_mode_status").innerHTML = "Chế độ hồng ngoại đang bật"
+                        }   
+	                    else{
+                            checkbox1.checked = 0;
+                            document.getElementById("infrared_mode_status").innerHTML = "Chế độ hồng ngoại đang tắt"
+                        } 
+                        setTimeout(reloadInfrared, 3000); //set độ trễ 3s
+                    }
                     
                 }else{  
                     alert('get last data failed :(');  

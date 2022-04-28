@@ -77,7 +77,7 @@ exports.post = (req, res, next) => {
             const client = mqtt.connect('mqtts://io.adafruit.com', {
                 port: 8883,
                 username: "doancnpm",
-                password: "aio_sZxp94voodS9E1K3DzImypmo0nwC"
+                password: "aio_TFLQ42P2uVjHHKNCQnByAwbvomR7"
             });
             var light = `${client.options.username}/feeds/light`;
             client.on('connect', function() {
@@ -114,7 +114,7 @@ exports.postIR = (req, res, next) => {
             const client = mqtt.connect('mqtts://io.adafruit.com', {
                 port: 8883,
                 username: "doancnpm",
-                password: "aio_sZxp94voodS9E1K3DzImypmo0nwC"
+                password: "aio_TFLQ42P2uVjHHKNCQnByAwbvomR7"
             });
             var mode = `${client.options.username}/feeds/mode`;
             client.on('connect', function() {

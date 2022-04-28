@@ -30,10 +30,20 @@
 
 .IR_mode{
   position: absolute;
-  bottom: 10%;
+  top: 10%;
+  right: 10%;
   justify-content: center;
   align-items: center;
 }
+
+.light_mode{
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  justify-content: center;
+  align-items: center;
+}
+
 
 @media screen and (max-width: 744px) {
   .content-container {
