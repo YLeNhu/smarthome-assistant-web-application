@@ -1,0 +1,307 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="title" style="margin-bottom: 0px;">Danh sách thiết bị và trạng thái
+</div>
+<div class="toolbar-content">
+    <div class="button-refresh">
+        <button onClick="autoRefresh();"  class="btn btn-primary btn-lg">Refresh Page</button>
+    </div>
+    
+    <div class="receive-tb-container">
+        <div class="receive-filter" style="margin-right:-35px;">
+            <input id="myInput" type="text" placeholder="Tìm kiếm...">
+        </div>  
+    </div>
+
+</div>
+{{#if ret_list}}
+<div class="toolbar-content">
+
+    <div class="receive-tb-container">
+        <div class="dropdown">
+            <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Lọc theo
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button" onclick="FormatByWeek()">Theo tuần</button>
+                <button class="dropdown-item" type="button" onclick="FormatByMonth()">Theo tháng</button>
+                <button class="dropdown-item" type="button">Theo năm</button>
+            </div>
+        </div>
+
+    </div>
+   
+</div>
+{{/if}}
+
+{{#if devices_list}}
+<div class="waiting-content">
+    <div class="my-table">
+        <table class="list">
+        <thead>
+            <tr>
+                {{!-- <th>Mã</th> --}}
+                <th>Tên thiết bị</th>
+                <th class="col-time">Thời gian tạo thiết bị</th>
+            </tr>
+        </thead>
+        <tbody id="receive-body">
+
+            {{#each devices_list}}
+            
+            <tr>
+                {{!-- <td>{{this.id}}</td> --}}
+                <td>
+                    <div class="mycontainer">
+                        <a href="/device_status" class="button" style="vertical-align:middle"><span>{{this.device_name}}</span></a>
+                    </div>
+                    
+                    
+                </td>
+                <td class="col-time">{{formatDate this.create_time}}</td>
+                {{!-- {{#each ret_list}} --}}
+                <td>
+                    {{!-- <a href="/device_status/{{this.id}}" class="btn btn-primary btn-lg">Chi tiết</a> --}}
+                   
+                        {{this.value}}
+                    
+                </td>
+                {{!-- {{/each}} --}}
+                
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <table class="list" id="toSortContent">
+        <thead>
+            <tr>
+                <th>Trạng thái gần đây nhất</th>
+                <th>Thời gian xuất hiện trạng thái</th>
+            </tr>
+        </thead>
+        <tbody id="receive-body" >
+
+            {{#each ret_list}}
+            
+            <tr>
+                
+                {{!-- {{#each ret_list}} --}}
+                <td>
+                    {{!-- <a href="/device_status/{{this.id}}" class="btn btn-primary btn-lg">Chi tiết</a> --}}
+                   
+                        {{this.value}}
+                    
+                </td>
+                <td class="col-time">{{formatDate this.created_at}}</td>
+                {{!-- {{/each}} --}}
+                
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    </div>
+</div>
+<br>
+
+
+{{else}}
+<h2 class="note">Hiện tại chưa có thông tin nào để hiển thị</h2>
+{{/if}}
+
+
+<script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
+<script>
+    function formatDate(date) {
+        if (date) {
+            let option = { hour: "2-digit", minute: "2-digit", second: "2-digit" };
+            
+            return new Date(date).toLocaleDateString("vi-VN", option);
+        }
+    }
+    
+    function hideContent(){
+        var table, tr, td, i, j;
+
+        table = document.getElementById("toSortContent");
+        tr = table.getElementsByTagName("tr");
+        for (i = 1; i < tr.length; i++) {
+           
+                tr[i].style.display = "";
+
+           
+        }
+    }
+
+    function log_console() {
+
+            console.log(devices_list);
+    }
+</script>
+
+<script>
+    function autoRefresh() {
+        window.location = window.location.href;
+    }
+
+    alertHighGasvalue();
+    
+</script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#receive-body tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        alertHighGasvalue();
+    });
+    function autoRefresh() {
+        window.location = window.location.href;
+    }
+    function FormatByWeek(){
+            
+            
+            var tableRef = document.getElementById("toSortContent");
+            if(tableRef){
+                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
+                        let tmp = tableRef.rows[r].cells[c].innerHTML;
+                        let tmpTime = tmp.split(",");
+                        let tmpSlit1 = tmpTime[1].split("/");
+                        let dayToCheck = tmpSlit1[0];
+                        
+        
+                        var curr = new Date; // get current date
+
+                        const date = new Date(curr);
+                        const day = date.getDay(); // 👉️ get day of week
+
+                        // Day of month - day of week (-6 if Sunday), otherwise +1
+                        const firstDayOfWeek = date.getDate() - day + (day === 0 ? -6 : 1);
+                        const lastDayOfWeek = firstDayOfWeek + 6;
+                   
+                        console.log("first day of week: " + firstDayOfWeek);
+                        
+                        console.log("last day of week: " + lastDayOfWeek);
+
+                        if(dayToCheck < firstDayOfWeek || dayToCheck > lastDayOfWeek){
+                        
+                            {{!-- alert("monthToCheck == d.getMonth"); --}}
+                            table = document.getElementById("toSortContent");
+                            tr = table.getElementsByTagName("tr"); 
+                            tr[r].innerHTML="";
+
+                        }
+                        
+                        
+
+                    }
+                }
+                
+            }
+        
+    }
+
+
+    function FormatByMonth(){
+        
+            
+            var tableRef = document.getElementById("toSortContent");
+            if(tableRef){
+                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
+                        let tmp = tableRef.rows[r].cells[c].innerHTML;
+                        let tmpTime = tmp.split(",");
+                        let tmpSlit1 = tmpTime[1].split("/");
+                        let monthToCheck = tmpSlit1[1];
+                        
+                        let d = new Date();
+                        if(monthToCheck == d.getMonth()){
+                        
+                            {{!-- alert("monthToCheck == d.getMonth"); --}}
+                            table = document.getElementById("toSortContent");
+                            tr = table.getElementsByTagName("tr"); 
+                            tr[r].innerHTML="";
+
+                        }
+                        
+                        
+
+                    }
+                }
+                
+            }
+        
+    }
+    
+
+    function FormatByYear(){
+        
+            var tableRef = document.getElementById("toSortContent");
+            if(tableRef){
+                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
+                        let tmp = tableRef.rows[r].cells[c].innerHTML;
+                        let tmpTime = tmp.split(",");
+                        let tmpSlit1 = tmpTime[1].split("/");
+                        let yearToCheck = tmpSlit1[2];
+                        
+                        let d = new Date();
+                        if(monthToCheck != d.getFullYear()){
+                        
+                            {{!-- alert("monthToCheck == d.getMonth"); --}}
+                            table = document.getElementById("toSortContent");
+                            tr = table.getElementsByTagName("tr"); 
+                            tr[r].innerHTML="";
+                            
+
+                        }
+                        
+                        
+
+                    }
+                }
+                
+            }
+        
+    }
+
+    function alertHighGasvalue(){
+        $.ajax({
+            
+            url: '/tester/getLastGasValue',
+            
+            method: 'GET',
+            dataType: 'json',
+            success:function(response){ 
+                console.log('msg: '+ response.data);
+                if(response.msg=='success'){  
+                    
+                    
+                    console.log('value: ' + response.data[0].value);
+                    
+                    if(response.data[0].value > '60'){
+                        alert('CẢNH BÁO: PHÁT HIỆN NỒNG ĐỘ KHÍ GAS BẤT THƯỜNG, XIN VUI LÒNG KIỂM TRA CĂN HỘ CỦA BẠN NGAY LẬP TỨC!!');
+                    }
+                    
+                    alertHighGasvalue();
+                }else{  
+                    
+                    alert('get last gas data failed :(');  
+                }  
+            },  
+            error:function(response){  
+                     alert('server error')     
+            }  
+        });
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
