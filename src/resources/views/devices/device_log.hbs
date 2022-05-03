@@ -1,3 +1,4 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="title" style="margin-bottom: 0px;">Danh sách thiết bị và trạng thái
 </div>
 <div class="toolbar-content">
@@ -10,8 +11,27 @@
             <input id="myInput" type="text" placeholder="Tìm kiếm...">
         </div>  
     </div>
-</div>
 
+</div>
+{{#if ret_list}}
+<div class="toolbar-content">
+
+    <div class="receive-tb-container">
+        <div class="dropdown">
+            <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Lọc theo
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button" onclick="FormatByWeek()">Theo tuần</button>
+                <button class="dropdown-item" type="button" onclick="FormatByMonth()">Theo tháng</button>
+                <button class="dropdown-item" type="button">Theo năm</button>
+            </div>
+        </div>
+
+    </div>
+   
+</div>
+{{/if}}
 
 {{#if devices_list}}
 <div class="waiting-content">
@@ -51,14 +71,14 @@
             {{/each}}
         </tbody>
     </table>
-    <table class="list">
+    <table class="list" id="toSortContent">
         <thead>
             <tr>
                 <th>Trạng thái gần đây nhất</th>
                 <th>Thời gian xuất hiện trạng thái</th>
             </tr>
         </thead>
-        <tbody id="receive-body">
+        <tbody id="receive-body" >
 
             {{#each ret_list}}
             
@@ -93,11 +113,22 @@
     function formatDate(date) {
         if (date) {
             let option = { hour: "2-digit", minute: "2-digit", second: "2-digit" };
+            
             return new Date(date).toLocaleDateString("vi-VN", option);
         }
     }
+    
+    function hideContent(){
+        var table, tr, td, i, j;
+        table = document.getElementById("toSortContent");
+        tr = table.getElementsByTagName("tr");
+        for (i = 1; i < tr.length; i++) {
+           
+                tr[i].style.display = "";
+           
+        }
+    }
     function log_console() {
-
             console.log(devices_list);
     }
 </script>
@@ -106,7 +137,6 @@
     function autoRefresh() {
         window.location = window.location.href;
     }
-    setInterval('autoRefresh()', 10000);
     alertHighGasvalue();
     
 </script>
@@ -120,6 +150,107 @@
         });
         alertHighGasvalue();
     });
+    function autoRefresh() {
+        window.location = window.location.href;
+    }
+    function FormatByWeek(){
+            
+            
+            var tableRef = document.getElementById("toSortContent");
+            if(tableRef){
+                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
+                        let tmp = tableRef.rows[r].cells[c].innerHTML;
+                        let tmpTime = tmp.split(",");
+                        let tmpSlit1 = tmpTime[1].split("/");
+                        let dayToCheck = tmpSlit1[0];
+                        
+        
+                        var curr = new Date; // get current date
+                        const date = new Date(curr);
+                        const day = date.getDay(); // 👉️ get day of week
+                        // Day of month - day of week (-6 if Sunday), otherwise +1
+                        const firstDayOfWeek = date.getDate() - day + (day === 0 ? -6 : 1);
+                        const lastDayOfWeek = firstDayOfWeek + 6;
+                   
+                        console.log("first day of week: " + firstDayOfWeek);
+                        
+                        console.log("last day of week: " + lastDayOfWeek);
+                        if(dayToCheck < firstDayOfWeek || dayToCheck > lastDayOfWeek){
+                        
+                            {{!-- alert("monthToCheck == d.getMonth"); --}}
+                            table = document.getElementById("toSortContent");
+                            tr = table.getElementsByTagName("tr"); 
+                            tr[r].innerHTML="";
+                        }
+                        
+                        
+                    }
+                }
+                
+            }
+        
+    }
+    function FormatByMonth(){
+        
+            
+            var tableRef = document.getElementById("toSortContent");
+            if(tableRef){
+                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
+                        let tmp = tableRef.rows[r].cells[c].innerHTML;
+                        let tmpTime = tmp.split(",");
+                        let tmpSlit1 = tmpTime[1].split("/");
+                        let monthToCheck = tmpSlit1[1];
+                        
+                        let d = new Date();
+                        if(monthToCheck == d.getMonth()){
+                        
+                            {{!-- alert("monthToCheck == d.getMonth"); --}}
+                            table = document.getElementById("toSortContent");
+                            tr = table.getElementsByTagName("tr"); 
+                            tr[r].innerHTML="";
+                        }
+                        
+                        
+                    }
+                }
+                
+            }
+        
+    }
+    
+    function FormatByYear(){
+        
+            var tableRef = document.getElementById("toSortContent");
+            if(tableRef){
+                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
+                        let tmp = tableRef.rows[r].cells[c].innerHTML;
+                        let tmpTime = tmp.split(",");
+                        let tmpSlit1 = tmpTime[1].split("/");
+                        let yearToCheck = tmpSlit1[2];
+                        
+                        let d = new Date();
+                        if(monthToCheck != d.getFullYear()){
+                        
+                            {{!-- alert("monthToCheck == d.getMonth"); --}}
+                            table = document.getElementById("toSortContent");
+                            tr = table.getElementsByTagName("tr"); 
+                            tr[r].innerHTML="";
+                            
+                        }
+                        
+                        
+                    }
+                }
+                
+            }
+        
+    }
     function alertHighGasvalue(){
         $.ajax({
             
@@ -150,3 +281,9 @@
         });
     }
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
