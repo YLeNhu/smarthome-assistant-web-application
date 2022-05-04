@@ -6,13 +6,29 @@
         <button onClick="autoRefresh();"  class="btn btn-primary btn-lg">Refresh Page</button>
     </div>
     
+    <div class="receive-tb-container" style="margin-left: 20px;">
+        <div class="dropdown">
+            <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Lọc theo
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button" onclick="FormatByWeek()">Theo tuần</button>
+                <button class="dropdown-item" type="button" onclick="FormatByMonth()">Theo tháng</button>
+                <button class="dropdown-item" type="button" onclick="FormatByYear()">Theo năm</button>
+            </div>
+        </div>
+
+    </div>
+
     <div class="receive-tb-container">
         <div class="receive-filter" style="margin-right:-35px;">
             <input id="myInput" type="text" placeholder="Tìm kiếm...">
         </div>  
     </div>
 
+
 </div>
+<!--
 {{#if ret_list}}
 <div class="toolbar-content">
 
@@ -24,7 +40,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                 <button class="dropdown-item" type="button" onclick="FormatByWeek()">Theo tuần</button>
                 <button class="dropdown-item" type="button" onclick="FormatByMonth()">Theo tháng</button>
-                <button class="dropdown-item" type="button">Theo năm</button>
+                <button class="dropdown-item" type="button" onclick="FormatByYear()">Theo năm</button>
             </div>
         </div>
 
@@ -32,7 +48,7 @@
    
 </div>
 {{/if}}
-
+-->
 {{#if devices_list}}
 <div class="waiting-content">
     <div class="my-table">
@@ -110,6 +126,7 @@
 
 <script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
 <script>
+    
     function formatDate(date) {
         if (date) {
             let option = { hour: "2-digit", minute: "2-digit", second: "2-digit" };
@@ -141,6 +158,18 @@
     
 </script>
 <script>
+
+    if(sessionStorage.getItem("sort_state")){
+        let state = sessionStorage.getItem("sort_state");
+        if(state =="1"){
+            FormatByWeek();
+        }else if(state == "2"){
+            FormatByMonth();
+        }else if(state == "3"){
+            FormatByYear();
+        }
+    }
+
     $(document).ready(function () {
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
@@ -153,12 +182,20 @@
     function autoRefresh() {
         window.location = window.location.href;
     }
+
+    function getTable(){
+        var table = document.getElementById("toSortContent");
+        return table;
+    }
+
     function FormatByWeek(){
             
-            
-            var tableRef = document.getElementById("toSortContent");
+            var tableRef = getTable();
             if(tableRef){
-                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    tr = tableRef.getElementsByTagName("tr");
+                    $(tr[r]).show();
+                }
                 for (var r = 1, n = tableRef.rows.length; r < n; r++) {
                     for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
                         let tmp = tableRef.rows[r].cells[c].innerHTML;
@@ -182,22 +219,25 @@
                             {{!-- alert("monthToCheck == d.getMonth"); --}}
                             table = document.getElementById("toSortContent");
                             tr = table.getElementsByTagName("tr"); 
-                            tr[r].innerHTML="";
+                            $(tr[r]).hide();
                         }
                         
                         
                     }
                 }
+                sessionStorage.setItem("sort_state", "1")
                 
             }
         
     }
     function FormatByMonth(){
-        
-            
-            var tableRef = document.getElementById("toSortContent");
+
+            var tableRef = getTable();
             if(tableRef){
-                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    tr = tableRef.getElementsByTagName("tr");
+                    $(tr[r]).show();
+                }
                 for (var r = 1, n = tableRef.rows.length; r < n; r++) {
                     for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
                         let tmp = tableRef.rows[r].cells[c].innerHTML;
@@ -206,27 +246,31 @@
                         let monthToCheck = tmpSlit1[1];
                         
                         let d = new Date();
-                        if(monthToCheck == d.getMonth()){
+                        if(monthToCheck - 1 != d.getMonth()){
                         
                             {{!-- alert("monthToCheck == d.getMonth"); --}}
                             table = document.getElementById("toSortContent");
                             tr = table.getElementsByTagName("tr"); 
-                            tr[r].innerHTML="";
+                            $(tr[r]).hide();
                         }
                         
                         
                     }
                 }
+                sessionStorage.setItem("sort_state", "2")
                 
             }
         
     }
     
     function FormatByYear(){
-        
-            var tableRef = document.getElementById("toSortContent");
+            
+            var tableRef = getTable();
             if(tableRef){
-                
+                for (var r = 1, n = tableRef.rows.length; r < n; r++) {
+                    tr = tableRef.getElementsByTagName("tr");
+                    $(tr[r]).show();
+                }    
                 for (var r = 1, n = tableRef.rows.length; r < n; r++) {
                     for (var c = 1, m = tableRef.rows[r].cells.length; c < m; c++) {
                         let tmp = tableRef.rows[r].cells[c].innerHTML;
@@ -235,18 +279,19 @@
                         let yearToCheck = tmpSlit1[2];
                         
                         let d = new Date();
-                        if(monthToCheck != d.getFullYear()){
+                        if(yearToCheck != d.getFullYear()){
                         
                             {{!-- alert("monthToCheck == d.getMonth"); --}}
                             table = document.getElementById("toSortContent");
                             tr = table.getElementsByTagName("tr"); 
-                            tr[r].innerHTML="";
+                            $(tr[r]).hide();
                             
                         }
                         
                         
                     }
                 }
+                sessionStorage.setItem("sort_state", "3")
                 
             }
         
@@ -259,11 +304,11 @@
             method: 'GET',
             dataType: 'json',
             success:function(response){ 
-                console.log('msg: '+ response.data);
+                //console.log('msg: '+ response.data);
                 if(response.msg=='success'){  
                     
                     
-                    console.log('value: ' + response.data[0].value);
+                    //console.log('value: ' + response.data[0].value);
                     
                     if(response.data[0].value > '60'){
                         alert('CẢNH BÁO: PHÁT HIỆN NỒNG ĐỘ KHÍ GAS BẤT THƯỜNG, XIN VUI LÒNG KIỂM TRA CĂN HỘ CỦA BẠN NGAY LẬP TỨC!!');
