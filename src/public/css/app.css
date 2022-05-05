@@ -1626,7 +1626,7 @@ input:checked + .slider:before {
 
 .wire {
   position: absolute;
-  bottom: 65%;
+  bottom: 70%;
   width: 4px;
   height: 60vh;
   background: black;
@@ -1654,7 +1654,7 @@ input:checked + .slider:before {
 .colors_container {
   background-color: white;
   position: absolute;
-  width: 250%;
+  width: 180%;
   padding: 20px 0;
   font-family: "Work Sans", sans-serif;
   font-size: 20px;
