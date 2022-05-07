@@ -29,7 +29,14 @@ exports.show = (req, res, next) => {
     }
 }
 exports.getLastData = (req, res, next)=>{
-    var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/light/data';
+    //================GET FEED INFO======================//
+    const baseURL = "https://io.adafruit.com/api/v2/";
+    const username = "doancnpm";
+    const baseFeedName = "/feeds/";
+    const feedName = "light";
+    var info = baseURL + username + baseFeedName + feedName + "/data";
+    //==================================================//
+    //var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/light/data';
     var latest_info = info.concat("?limit=1");
     axios.get(latest_info) //New
         .then(data =>  {
@@ -42,7 +49,15 @@ exports.getLastData = (req, res, next)=>{
         })                    
 }
 exports.getLastGasValue =  (req, res, next) => {
-    var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/gas/data';
+    //================GET FEED INFO======================//
+    const baseURL = "https://io.adafruit.com/api/v2/";
+    const username = "doancnpm";
+    const baseFeedName = "/feeds/";
+    const feedName = "gas";
+    var info = baseURL + username + baseFeedName + feedName + "/data";
+    //==================================================//
+
+    //var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/gas/data';
     var latest_info = info.concat("?limit=1");
     axios.get(latest_info) //New
         .then(data =>  {
@@ -56,7 +71,14 @@ exports.getLastGasValue =  (req, res, next) => {
 }
 
 exports.getLastIR =  (req, res, next) => {
-    var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/mode/data';
+    //================GET FEED INFO======================//
+    const baseURL = "https://io.adafruit.com/api/v2/";
+    const username = "doancnpm";
+    const baseFeedName = "/feeds/";
+    const feedName = "mode";
+    var info = baseURL + username + baseFeedName + feedName + "/data";
+    //==================================================//
+    //var info = 'https://io.adafruit.com/api/v2/doancnpm/feeds/mode/data';
     var latest_info = info.concat("?limit=1");
     axios.get(latest_info) //New
         .then(data =>  {
@@ -76,10 +98,10 @@ exports.post = (req, res, next) => {
 
             const client = mqtt.connect('mqtts://io.adafruit.com', {
                 port: 8883,
-                username: "doancnpm",
-                password: "aio_TFLQ42P2uVjHHKNCQnByAwbvomR7"
+                username: "doancnpm", //MODIFY HERE
+                password: "aio_cfbT81VhiCX6KD0gf6jwU9L9a0W6" //MODIFY HERE
             });
-            var light = `${client.options.username}/feeds/light`;
+            var light = `${client.options.username}/feeds/light`; //MODIFY HERE
             client.on('connect', function() {
                 console.log(client.connected)
                 client.subscribe(light, function(err){
@@ -113,10 +135,10 @@ exports.postIR = (req, res, next) => {
 
             const client = mqtt.connect('mqtts://io.adafruit.com', {
                 port: 8883,
-                username: "doancnpm",
-                password: "aio_TFLQ42P2uVjHHKNCQnByAwbvomR7"
+                username: "doancnpm", //MODIFY HERE
+                password: "aio_cfbT81VhiCX6KD0gf6jwU9L9a0W6" //MODIFY HERE
             });
-            var mode = `${client.options.username}/feeds/mode`;
+            var mode = `${client.options.username}/feeds/mode`; //MODIFY HERE
             client.on('connect', function() {
                 console.log(client.connected)
                 client.subscribe(mode, function(err){

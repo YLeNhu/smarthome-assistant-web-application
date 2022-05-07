@@ -9,15 +9,26 @@ exports.show = (req, res, next) => {
         db.query(sql_1, [req.session.user.phone_number], (err, re) => {
             // if (err) throw err;
             const id = re[0].id;
-            let sql2 = "SELECT * FROM `devices` JOIN `devices_detail` ON devices.id = devices_detail.device_id WHERE (customer_id = ? AND devices.is_public = '1');";
+            //JOIN `devices_detail` ON devices.id = devices_detail.device_id 
+            let sql2 = "SELECT * FROM `devices` WHERE (customer_id = ? AND devices.is_public = '1');";
             db.query(sql2, [id], async (err, devices_list) => {
                 
                 if (devices_list.length > 0) {
                     var l = devices_list.length;
                     let ret_list = [];
                     for (let i = 0; i < l; i++){
+                        //===========GET ALL FEED INFO=========//
+                        //base API url
+                        const baseURL = "https://io.adafruit.com/api/v2/";
+                        const username = "doancnpm";
+                        const baseFeedName = "/feeds/";
+                        //console.log(devices_list);
+                        const feedName = devices_list[i].device_name.toLowerCase();
+                        var info = baseURL + username + baseFeedName + feedName + "/data";
+                        //console.log("We're getting" + info + "feed's data(s)");
+                        //=====================================//
                         // console.log(devices_list[i].id)
-                        var info = devices_list[i].feed_info;
+                        // var info = devices_list[i].feed_info;
                         var latest_info = info.concat("?limit=1");
                         // console.log(latest_info)
                         await axios.get(latest_info)
@@ -54,14 +65,22 @@ exports.showLog = (req, res, next) => {
             // if (err) throw err;
             const id = req.params.id;
             // console.log('ID:' + req.params);
-            
-            let sql2 = "SELECT * FROM `devices` JOIN `devices_detail` ON devices.id = devices_detail.device_id WHERE (devices.id = ? AND devices.is_public = '1');";
+            //SELECT * FROM `devices` JOIN `devices_detail` ON devices.id = devices_detail.device_id WHERE (devices.id = ? AND devices.is_public = '1');
+            let sql2 = "SELECT * FROM `devices` WHERE (devices.id = ? AND devices.is_public = '1');";
             db.query(sql2, [id], async (err, devices_list) => {
 
                 
                 if (devices_list.length > 0) {
+                    //===============GET FEED INFO=============//
+                    const baseURL = "https://io.adafruit.com/api/v2/";
+                    const username = "doancnpm";
+                    const baseFeedName = "/feeds/";
+                    //console.log(devices_list);
+                    const feedName = devices_list[0].device_name.toLowerCase();
+                    var info = baseURL + username + baseFeedName + feedName + "/data";
+                    //==========================================//
                     // console.log(devices_list)
-                    var info = devices_list[0].feed_info;
+                    // var info = devices_list[0].feed_info;
                     var latest_info = info.concat("?limit=5"); //New
                     await axios.get(latest_info) //New
                             .then(data =>  {
